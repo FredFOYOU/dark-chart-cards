@@ -15,7 +15,7 @@ export function PeriodTabs<TPeriod extends string>({
     <div
       role="group"
       aria-label={`${chartName} period`}
-      className="inline-flex h-8 shrink-0 items-center gap-0.5 rounded-[8px] border border-line bg-tile p-0.5"
+      className="inline-flex h-[30px] shrink-0 items-center gap-0.5 rounded-[8px] bg-card p-[3px]"
     >
       {periods.map((period) => {
         const selected = period === value;

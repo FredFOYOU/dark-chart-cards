@@ -5,7 +5,16 @@ import { RADAR_PERIODS, sumBy, type RadarDataset } from "@/data/radar";
 import { useRechartsMotion } from "@/hooks/useRechartsMotion";
 import { chartColor } from "@/lib/colors";
 import { formatNumber } from "@/lib/format";
-import { getRadarData, getRadarHeadline, getRadarTiles, RadarFrame, radarDot } from "./RadarBase";
+import {
+  getRadarData,
+  getRadarHeadline,
+  getRadarTiles,
+  RADAR_HEIGHT,
+  RadarFrame,
+  radarDot,
+} from "./RadarBase";
+
+const LEGEND_HEIGHT = 24;
 
 const SERIES = [
   { key: "desktop", label: "Desktop", color: chartColor.lime },
@@ -15,10 +24,13 @@ const SERIES = [
 function RadarLegend({ data, activeIndex }: { data: RadarDataset; activeIndex: number | null }) {
   const point = activeIndex === null ? undefined : data.points[activeIndex];
   return (
-    <ul className="mt-1 flex justify-center gap-5 text-[13px] leading-5">
+    <ul
+      className="flex items-end justify-center gap-4 text-[13px] leading-[18px]"
+      style={{ height: LEGEND_HEIGHT }}
+    >
       {SERIES.map(({ key, label, color }) => (
         <li key={key} className="flex items-center gap-1.5">
-          <span aria-hidden className="size-2 rounded-full" style={{ backgroundColor: color }} />
+          <span aria-hidden className="size-2.5 rounded-[3px]" style={{ backgroundColor: color }} />
           <span className="text-muted">{label}</span>
           <AnimatedNumber
             value={point ? point[key] : sumBy(data.points, key)}
@@ -37,7 +49,7 @@ export function RadarComparisonCard() {
   return (
     <ChartCard
       title="Radar comparison"
-      description="Two outlined series on the same grid, with a live legend that follows the hovered month."
+      description="Two outlined series share one grid, and the legend updates live so you can compare them month by month."
       label="Visitors"
       periods={RADAR_PERIODS}
       defaultPeriod="H1 2024"
@@ -46,6 +58,7 @@ export function RadarComparisonCard() {
       getHeadline={getRadarHeadline}
       getTiles={getRadarTiles}
       tileColumns={3}
+      chartHeight={RADAR_HEIGHT + LEGEND_HEIGHT}
       chartLabel="Desktop and mobile visitors per month, compared on a six-axis radar"
     >
       {({ data, activeIndex, setActiveIndex }) => (

@@ -6,8 +6,6 @@ export type FunnelPeriod = (typeof FUNNEL_PERIODS)[number];
 export interface FunnelStage {
   label: string;
   value: number;
-  /** Variation de l'étape sur la période, en points de pourcentage. */
-  delta: number;
   color: ChartColor;
 }
 
@@ -17,31 +15,16 @@ export interface FunnelDataset {
   stages: readonly FunnelStage[];
 }
 
-function stages(
-  linkOpened: readonly [number, number],
-  started: readonly [number, number],
-  completed: readonly [number, number],
-  converted: readonly [number, number],
-): readonly FunnelStage[] {
-  return [
-    { label: "Link opened", value: linkOpened[0], delta: linkOpened[1], color: chartColor.lime },
-    { label: "Started", value: started[0], delta: started[1], color: chartColor.blue },
-    { label: "Completed", value: completed[0], delta: completed[1], color: chartColor.violet },
-    { label: "Converted", value: converted[0], delta: converted[1], color: chartColor.pink },
-  ];
-}
+const withValues = (values: readonly number[]): FunnelStage[] =>
+  [
+    { label: "Link opened", color: chartColor.lime },
+    { label: "Started", color: chartColor.blue },
+    { label: "Completed", color: chartColor.violet },
+    { label: "Converted", color: chartColor.pink },
+  ].map((stage, index) => ({ ...stage, value: values[index] ?? 0 }));
 
 export const funnelData: Record<FunnelPeriod, FunnelDataset> = {
-  "Last 7 days": {
-    delta: 1.8,
-    stages: stages([214, 1.8], [129, 2.3], [71, 1.1], [41, 3.2]),
-  },
-  "Last 30 days": {
-    delta: 3.4,
-    stages: stages([842, 3.4], [463, 2.9], [301, 4.1], [152, 5.6]),
-  },
-  "Last 90 days": {
-    delta: 7.9,
-    stages: stages([2614, 7.9], [1516, 6.4], [837, 8.8], [497, 11.2]),
-  },
+  "Last 7 days": { delta: 5.2, stages: withValues([197, 110, 77, 38]) },
+  "Last 30 days": { delta: 3.4, stages: withValues([842, 463, 301, 152]) },
+  "Last 90 days": { delta: 7.9, stages: withValues([2614, 1516, 837, 497]) },
 };

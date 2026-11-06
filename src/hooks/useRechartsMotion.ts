@@ -14,5 +14,12 @@ export function useRechartsMotion() {
 export const axisProps = {
   axisLine: false,
   tickLine: false,
-  tick: { fill: "var(--text-muted)", fontSize: 12 },
+  tick: { fill: "var(--text-muted)", fontSize: 11 },
+} as const;
+
+/** Repères horizontaux pointillés des graphiques à axes. */
+export const gridProps = {
+  vertical: false,
+  stroke: "var(--track)",
+  strokeDasharray: "3 3",
 } as const;

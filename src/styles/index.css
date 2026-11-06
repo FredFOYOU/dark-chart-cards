@@ -13,6 +13,8 @@
   --color-card-inner: var(--card-inner);
   --color-tile: var(--tile);
   --color-tile-active: var(--tile-active);
+  --color-track: var(--track);
+  --color-grid: var(--grid);
   --color-line: var(--border);
   --color-line-hover: var(--border-hover);
   --color-text: var(--text);

@@ -25,7 +25,7 @@ export function PeriodSelect<TPeriod extends string>({
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger
         aria-label={`${chartName} period: ${value}`}
-        className="group inline-flex h-8 shrink-0 items-center gap-1.5 rounded-[8px] border border-line bg-tile px-2.5 text-[13px] text-text transition-colors duration-200 ease-out hover:bg-tile-active data-[state=open]:bg-tile-active"
+        className="group inline-flex h-7 shrink-0 items-center gap-1.5 rounded-[8px] border border-line bg-tile px-2 text-[13px] text-text transition-colors duration-200 ease-out hover:bg-tile-active data-[state=open]:bg-tile-active"
       >
         <Calendar className="size-3.5 text-muted" aria-hidden />
         <span className="whitespace-nowrap">{value}</span>

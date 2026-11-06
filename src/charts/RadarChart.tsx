@@ -4,7 +4,14 @@ import { RADAR_PERIODS } from "@/data/radar";
 import { useRechartsMotion } from "@/hooks/useRechartsMotion";
 import { chartColor } from "@/lib/colors";
 import { formatNumber } from "@/lib/format";
-import { getRadarData, getRadarHeadline, getRadarTiles, RadarFrame, radarDot } from "./RadarBase";
+import {
+  getRadarData,
+  getRadarHeadline,
+  getRadarTiles,
+  RADAR_HEIGHT,
+  RadarFrame,
+  radarDot,
+} from "./RadarBase";
 
 export function RadarCard() {
   const seriesMotion = useRechartsMotion();
@@ -12,7 +19,7 @@ export function RadarCard() {
   return (
     <ChartCard
       title="Radar chart"
-      description="A filled hexagon that tracks one series across six axes, with the headline following the hovered month."
+      description="A filled hexagon built from the chart tokens; hover an axis to update the headline and its matching tile."
       label="Visitors"
       periods={RADAR_PERIODS}
       defaultPeriod="H1 2024"
@@ -21,6 +28,7 @@ export function RadarCard() {
       getHeadline={getRadarHeadline}
       getTiles={getRadarTiles}
       tileColumns={3}
+      chartHeight={RADAR_HEIGHT}
       chartLabel="Visitors per month on a six-axis radar"
     >
       {({ data, activeIndex, setActiveIndex }) => (

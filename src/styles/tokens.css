@@ -1,30 +1,32 @@
+/* Valeurs échantillonnées sur la vidéo de référence. */
 :root {
-  --bg: #0b0b0b; /* fond de page */
-  --card: #141414; /* fond carte */
-  --card-inner: #1a1a1a; /* zone graphique + tuiles */
-  --tile: #202020; /* tuiles de stats */
+  --bg: #141414; /* fond de page */
+  --card: #101010; /* fond carte */
+  --card-inner: #161616; /* zone graphique + tuiles */
+  --tile: #1f1f1f; /* tuiles de stats */
   --border: #262626;
   --border-hover: #8a8a8a;
   --text: #f5f5f5;
   --text-muted: #8b8b8b;
-  --chart-1: #a3ff12; /* vert lime (couleur principale) */
-  --chart-2: #3b82f6; /* bleu */
-  --chart-3: #c056f5; /* violet */
-  --chart-4: #ec4899; /* rose */
-  --chart-5: #facc15; /* jaune */
-  --chart-6: #10b981; /* vert émeraude */
-  --track: #262626; /* rail derrière barres/anneaux */
+  --chart-1: #9de300; /* vert lime (couleur principale) */
+  --chart-2: #3392fe; /* bleu */
+  --chart-3: #c278fe; /* violet */
+  --chart-4: #fa65b6; /* rose */
+  --chart-5: #fec700; /* jaune */
+  --chart-6: #03d695; /* vert émeraude */
+  --track: #252525; /* rail derrière barres/anneaux */
   --radius-card: 20px;
   --radius-inner: 14px;
 
   /* Tokens dérivés, requis par le reste de la spec */
-  --shell: #111111; /* grand conteneur, légèrement plus clair que le fond */
-  --tile-active: #2c2c2c; /* tuile en surbrillance */
-  --grid: #3d3d3d; /* grille des radars, repères et curseurs */
-  --delta-bg: rgba(163, 255, 18, 0.12); /* fond du badge de variation */
-  --pill: var(--bg); /* pastille de pourcentage du funnel */
-  --primary: #2563eb; /* bouton primaire */
-  --primary-hover: #1d4ed8;
+  --shell: #101010; /* grand conteneur de la galerie */
+  --tile-active: #2a2a2a; /* tuile en surbrillance */
+  --grid: #333333; /* grille des radars */
+  --sink: #d4d4d4; /* nœuds de destination du Sankey */
+  --delta-bg: rgba(157, 227, 0, 0.12); /* fond du badge de variation */
+  --pill: #0b0b0b; /* pastilles, séparateurs et icônes posées sur une couleur */
+  --primary: #1a68fb; /* bouton primaire */
+  --primary-hover: #1558d6;
   --on-primary: #ffffff;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);

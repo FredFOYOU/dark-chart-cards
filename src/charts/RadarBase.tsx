@@ -9,11 +9,9 @@ import {
 import type { Headline, StatTile } from "@/components/ChartCard";
 import { RechartsHoverSync } from "@/components/RechartsHoverSync";
 import { radarData, sumBy, type RadarDataset, type RadarPeriod, type RadarPoint } from "@/data/radar";
-import { chartColor } from "@/lib/colors";
 
-export const RADAR_HEIGHT = 264;
-/** Place réservée de chaque côté : sur une carte étroite, « September » ne doit pas être coupé. */
-const AXIS_LABEL_ROOM = 56;
+export const RADAR_HEIGHT = 196;
+const RADAR_RADIUS = 77;
 
 export interface RadarFrameProps {
   points: readonly RadarPoint[];
@@ -37,7 +35,8 @@ export function RadarFrame({ points, activeIndex, setActiveIndex, children }: Ra
         y={y}
         dy="0.35em"
         textAnchor={textAnchor}
-        fontSize={12}
+        fontSize={11}
+        fontWeight={active ? 500 : 400}
         className="chart-focusable"
         fill={active ? "var(--text)" : "var(--text-muted)"}
         style={{ opacity: dimmed ? 0.25 : 1 }}
@@ -52,8 +51,8 @@ export function RadarFrame({ points, activeIndex, setActiveIndex, children }: Ra
       <RadarChart
         data={[...points]}
         accessibilityLayer={false}
-        outerRadius="84%"
-        margin={{ top: 8, right: AXIS_LABEL_ROOM, bottom: 8, left: AXIS_LABEL_ROOM }}
+        outerRadius={RADAR_RADIUS}
+        margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
       >
         <RechartsHoverSync labels={labels} setActiveIndex={setActiveIndex} />
         <PolarGrid gridType="polygon" stroke="var(--grid)" />
@@ -74,7 +73,7 @@ interface RadarDotProps {
 export function radarDot(color: string, activeIndex: number | null) {
   const RadarVertex = ({ cx, cy, index }: RadarDotProps) =>
     index === activeIndex ? (
-      <circle cx={cx} cy={cy} r={4} fill={color} stroke="var(--card-inner)" strokeWidth={2} />
+      <circle cx={cx} cy={cy} r={3.5} fill={color} stroke="var(--card-inner)" strokeWidth={1.5} />
     ) : (
       <g />
     );
@@ -90,9 +89,5 @@ export function getRadarHeadline(data: RadarDataset, activeIndex: number | null)
 }
 
 export function getRadarTiles(data: RadarDataset): StatTile[] {
-  return data.points.map(({ month, desktop }) => ({
-    label: month,
-    value: desktop,
-    color: chartColor.lime,
-  }));
+  return data.points.map(({ month, desktop }) => ({ label: month, value: desktop }));
 }

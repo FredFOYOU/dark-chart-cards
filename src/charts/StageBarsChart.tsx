@@ -19,12 +19,16 @@ import {
 import { useRechartsMotion } from "@/hooks/useRechartsMotion";
 import { formatNumber, formatPercent } from "@/lib/format";
 
-const ROW_HEIGHT = 44;
-const BAR_HEIGHT = 30;
-const ICON_PADDING = 3;
-const ICON_SIZE = 14;
-const LABEL_WIDTH = 72;
-const VALUE_WIDTH = 92;
+const ROW_HEIGHT = 28;
+const BAR_HEIGHT = 18;
+const MIN_BAR_WIDTH = 14;
+const ICON_SIZE = 12;
+const ICON_INSET = 4;
+const LABEL_WIDTH = 70;
+const LABEL_GAP = 8;
+/** Colonnes de droite : valeur, puis part, alignées à droite depuis la fin du rail. */
+const VALUE_END = 46;
+const SHARE_END = 81;
 
 export interface StageBarsChartProps {
   stages: readonly Stage[];
@@ -41,11 +45,12 @@ export function StageBarsChart({ stages, activeIndex, setActiveIndex }: StageBar
     const index = stages.findIndex((stage) => stage.label === payload.value);
     return (
       <text
-        x={0}
+        x={LABEL_WIDTH - LABEL_GAP}
         y={y}
         dy="0.35em"
+        textAnchor="end"
         fontSize={13}
-        fill="var(--text)"
+        fill={activeIndex === index ? "var(--text)" : "var(--text-muted)"}
         className="chart-focusable"
         style={{ opacity: isDimmed(index) ? 0.25 : 1 }}
       >
@@ -61,36 +66,49 @@ export function StageBarsChart({ stages, activeIndex, setActiveIndex }: StageBar
     const barX = Number(x);
     const barY = Number(y);
     const barHeight = Number(height);
-    // La pilule reste au moins aussi large que le cercle de son icône.
-    const barWidth = Math.max(Number(width), barHeight);
-    const radius = barHeight / 2;
+    const barWidth = Math.max(Number(width), MIN_BAR_WIDTH);
+    const middleY = barY + barHeight / 2;
     const trackEnd = Number(background?.x ?? barX) + Number(background?.width ?? barWidth);
     const percent = (stage.value / firstValue) * 100;
     return (
       <g className="chart-focusable" style={{ opacity: isDimmed(index) ? 0.25 : 1 }}>
-        <rect x={barX} y={barY} width={barWidth} height={barHeight} rx={radius} fill={stage.color} />
-        <circle cx={barX + radius} cy={barY + radius} r={radius - ICON_PADDING} fill="var(--pill)" />
+        <rect
+          x={barX}
+          y={barY}
+          width={barWidth}
+          height={barHeight}
+          rx={Math.min(barHeight, barWidth) / 2}
+          fill={stage.color}
+        />
+        {/* L'icône garde sa place au début de la barre, même si la barre est plus courte. */}
         <Icon
-          x={barX + radius - ICON_SIZE / 2}
-          y={barY + radius - ICON_SIZE / 2}
+          x={barX + ICON_INSET}
+          y={middleY - ICON_SIZE / 2}
           width={ICON_SIZE}
           height={ICON_SIZE}
-          color="var(--text)"
+          color="var(--pill)"
           aria-hidden
         />
         <text
-          x={trackEnd + VALUE_WIDTH}
-          y={barY + radius}
+          x={trackEnd + VALUE_END}
+          y={middleY}
           dy="0.35em"
           textAnchor="end"
           fontSize={13}
+          fontWeight={500}
+          fill="var(--text)"
         >
-          <tspan fill="var(--text)" fontWeight={500}>
-            {formatNumber(stage.value)}
-          </tspan>
-          <tspan fill="var(--text-muted)" dx={6}>
-            {formatPercent(percent)}
-          </tspan>
+          {formatNumber(stage.value)}
+        </text>
+        <text
+          x={trackEnd + SHARE_END}
+          y={middleY}
+          dy="0.35em"
+          textAnchor="end"
+          fontSize={11}
+          fill="var(--text-muted)"
+        >
+          {formatPercent(percent)}
         </text>
       </g>
     );
@@ -103,7 +121,7 @@ export function StageBarsChart({ stages, activeIndex, setActiveIndex }: StageBar
         layout="vertical"
         accessibilityLayer={false}
         barSize={BAR_HEIGHT}
-        margin={{ top: 0, right: VALUE_WIDTH, bottom: 0, left: 0 }}
+        margin={{ top: 0, right: SHARE_END, bottom: 0, left: 0 }}
       >
         <RechartsHoverSync
           labels={stages.map((stage) => stage.label)}
@@ -114,6 +132,7 @@ export function StageBarsChart({ stages, activeIndex, setActiveIndex }: StageBar
           type="category"
           dataKey="label"
           width={LABEL_WIDTH}
+          interval={0}
           axisLine={false}
           tickLine={false}
           tick={renderTick}
@@ -145,7 +164,7 @@ export function StageBarsCard() {
   return (
     <ChartCard
       title="Stage bars"
-      description="Pill bars on a track with an icon, value and share on every row, for pipelines at a glance."
+      description="Funnel data as pill rows showing name, value and share, with a stat tile for each stage."
       label="Pipeline"
       periods={STAGE_PERIODS}
       getData={getData}
@@ -153,6 +172,7 @@ export function StageBarsCard() {
       getHeadline={getHeadline}
       getTiles={getTiles}
       tileColumns={3}
+      chartHeight={ROW_HEIGHT * 6}
       chartLabel="Pipeline stages from visits to enterprise, as horizontal pill bars"
     >
       {({ data, activeIndex, setActiveIndex }) => (

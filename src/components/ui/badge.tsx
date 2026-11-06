@@ -6,7 +6,8 @@ const badgeVariants = cva("inline-flex items-center whitespace-nowrap font-mediu
   variants: {
     variant: {
       delta: "rounded-[6px] bg-delta-bg px-1.5 py-0.5 text-[13px] leading-[18px] text-delta",
-      outline: "rounded-full border border-line bg-card px-3 py-1 text-[13px] leading-5 text-text",
+      outline:
+        "gap-1.5 rounded-[8px] border border-grid bg-track px-2 py-1 text-[12px] leading-4 text-text",
     },
   },
   defaultVariants: { variant: "delta" },

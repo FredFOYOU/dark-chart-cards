@@ -10,15 +10,15 @@ export interface SessionPoint {
 
 export interface SessionDataset {
   delta: number;
-  /** Taux de conversion sur la période, en points de pourcentage. */
+  /** Taux de conversion moyen sur la période, en points de pourcentage. */
   conversion: number;
   points: readonly SessionPoint[];
 }
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-const THIS_YEAR_SESSIONS = [4800, 5200, 5600, 6100, 6500, 6900, 7300, 7600, 7800, 8100, 8000, 9300];
-const THIS_YEAR_CONVERSION = [3.1, 3.4, 3.2, 3.8, 4.1, 3.9, 3.6, 3.7, 4.2, 3.9, 3.5, 4.0];
+const THIS_YEAR_SESSIONS = [4200, 4800, 5300, 5100, 6500, 7200, 6800, 7700, 8500, 8100, 9200, 9800];
+const THIS_YEAR_CONVERSION = [2.5, 2.7, 3.2, 3.0, 3.5, 3.9, 3.6, 4.2, 4.5, 4.3, 4.8, 5.3];
 
 const zip = (
   months: readonly string[],
@@ -42,13 +42,13 @@ export const sessionData: Record<SessionPeriod, SessionDataset> = {
     conversion: 3.3,
     points: zip(
       MONTHS,
-      [4300, 4700, 4400, 5300, 5900, 5600, 6400, 6200, 7000, 6800, 7300, 7700],
-      [2.8, 3.1, 2.6, 3.3, 3.6, 3.0, 3.4, 3.2, 3.9, 3.5, 3.7, 3.4],
+      [3800, 4300, 4100, 4700, 5900, 5600, 6400, 6200, 7000, 6800, 7300, 7700],
+      [2.4, 2.8, 2.6, 3.1, 3.4, 3.0, 3.4, 3.2, 3.9, 3.5, 3.9, 4.3],
     ),
   },
   "Last 6 months": {
     delta: 7.2,
-    conversion: 3.8,
+    conversion: 4.4,
     points: zip(MONTHS.slice(6), THIS_YEAR_SESSIONS.slice(6), THIS_YEAR_CONVERSION.slice(6)),
   },
 };
