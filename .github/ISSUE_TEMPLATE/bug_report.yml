@@ -1,0 +1,29 @@
+name: Signaler un bug
+description: Une carte ou une interaction ne fonctionne pas comme prévu.
+labels: [bug]
+body:
+  - type: input
+    id: card
+    attributes:
+      label: Carte concernée
+      placeholder: Funnel, Sankey, Combo…
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Étapes pour reproduire
+      placeholder: "1. Ouvrir la galerie\n2. Survoler…"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Résultat attendu et résultat obtenu
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Navigateur et taille d'écran
+      placeholder: Chrome 140, 1280 px
