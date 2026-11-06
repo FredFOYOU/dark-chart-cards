@@ -1,4 +1,4 @@
-import { Activity, Building2, Eye, Star, UserPlus, Users, type LucideIcon } from "lucide-react";
+import { Building2, Crown, Eye, UserPlus, Users, Zap, type LucideIcon } from "lucide-react";
 import { chartColor, type ChartColor } from "@/lib/colors";
 
 export const STAGE_PERIODS = ["Last 7 days", "Last 30 days", "Last 90 days"] as const;
@@ -19,8 +19,8 @@ export interface StageDataset {
 const DEFINITIONS = [
   { label: "Visits", color: chartColor.lime, icon: Eye },
   { label: "Sign-up", color: chartColor.blue, icon: UserPlus },
-  { label: "Active", color: chartColor.violet, icon: Activity },
-  { label: "Pro", color: chartColor.pink, icon: Star },
+  { label: "Active", color: chartColor.violet, icon: Zap },
+  { label: "Pro", color: chartColor.pink, icon: Crown },
   { label: "Team", color: chartColor.yellow, icon: Users },
   { label: "Enterprise", color: chartColor.emerald, icon: Building2 },
 ] as const;

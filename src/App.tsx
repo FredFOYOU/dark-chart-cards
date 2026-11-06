@@ -1,4 +1,4 @@
-import { BarChart3 } from "lucide-react";
+import { Box, ChartPie } from "lucide-react";
 import { AreaCard } from "@/charts/AreaChart";
 import { ComboCard } from "@/charts/ComboChart";
 import { EarningsCard } from "@/charts/EarningsChart";
@@ -16,26 +16,35 @@ export default function App() {
     <main className="min-h-screen bg-bg p-2 sm:p-4">
       <div className="mx-auto max-w-[1180px] rounded-[28px] bg-shell px-4 py-12 sm:px-8 sm:py-16">
         <header className="mx-auto flex max-w-[720px] flex-col items-center text-center">
-          <Badge variant="outline">Included with Pro</Badge>
-          <h1 className="mt-5 text-[32px] leading-[1.15] font-semibold tracking-tight text-text sm:text-[40px]">
+          <Badge variant="outline">
+            <span
+              aria-hidden
+              className="flex size-4 items-center justify-center rounded-[4px] bg-text text-[var(--pill)]"
+            >
+              <Box className="size-3" />
+            </span>
+            Included with Pro
+          </Badge>
+          <h1 className="mt-3.5 max-w-[460px] text-[32px] leading-[1.15] font-medium tracking-tight text-text sm:text-[40px]">
             Charts that make your data worth reading
           </h1>
-          <p className="mt-3 max-w-[560px] text-[16px] leading-6 text-muted">
-            Dark, focused chart cards with count-up headlines, synchronized hover and stat tiles that
-            keep every number one glance away.
+          <p className="mt-3 max-w-[500px] text-[14px] leading-5 text-muted">
+            Funnels, radars, Sankeys and more, built on Recharts with period switchers, hover focus
+            and stat tiles that all share one set of tokens.
           </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
+          <div className="mt-5 flex flex-wrap justify-center gap-2">
             <button
               type="button"
-              className="inline-flex h-10 items-center gap-2 rounded-[10px] bg-primary px-4 text-[14px] font-medium text-on-primary transition-colors duration-200 ease-out hover:bg-primary-hover"
+              className="inline-flex h-9 items-center gap-1.5 rounded-[8px] bg-primary px-3 text-[13px] font-medium text-on-primary transition-colors duration-200 ease-out hover:bg-primary-hover"
             >
-              <BarChart3 className="size-4" aria-hidden />
+              <ChartPie className="size-4" aria-hidden />
               Get every chart with Pro
             </button>
             <a
               href="#charts"
-              className="inline-flex h-10 items-center rounded-[10px] border border-line bg-tile px-4 text-[14px] font-medium text-text transition-colors duration-200 ease-out hover:bg-tile-active"
+              className="inline-flex h-9 items-center gap-1.5 rounded-[8px] border border-grid bg-track px-3 text-[13px] font-medium text-text transition-colors duration-200 ease-out hover:bg-tile-active"
             >
+              <Box className="size-4" aria-hidden />
               Browse all charts
             </a>
           </div>
@@ -44,7 +53,7 @@ export default function App() {
         <section
           id="charts"
           aria-label="Chart gallery"
-          className="mx-auto mt-12 grid max-w-[1100px] grid-cols-1 gap-4 md:grid-cols-2"
+          className="mx-auto mt-9 grid max-w-[1100px] grid-cols-1 gap-6 md:grid-cols-2"
         >
           <FunnelCard />
           <EarningsCard />

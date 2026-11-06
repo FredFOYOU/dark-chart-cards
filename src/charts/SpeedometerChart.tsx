@@ -7,20 +7,22 @@ import {
   type DevicePeriod,
   type DeviceShare,
 } from "@/data/devices";
-import { useElementWidth } from "@/hooks/useElementSize";
 import { useTweenedValues } from "@/hooks/useTweenedValues";
 import { formatNumber, formatPercent } from "@/lib/format";
 import { arcPath, focusableMark } from "@/lib/svg";
 
-const MAX_RADIUS = 170;
-const STROKE_WIDTH = 24;
-/** Espace visible entre deux segments, en plus de leurs extrémités arrondies. */
-const SEGMENT_GAP = 5;
-const BOTTOM_MARGIN = 6;
+const RADIUS = 96;
+const STROKE_WIDTH = 28;
+const SEGMENT_GAP = 2;
+const GAUGE_WIDTH = (RADIUS + STROKE_WIDTH / 2) * 2;
+const GAUGE_HEIGHT = RADIUS + STROKE_WIDTH / 2;
 /** Plage de la jauge, de 9 h à 3 h en passant par 12 h. */
 const GAUGE_START = -Math.PI / 2;
-const GAUGE_END = Math.PI / 2;
-const MIN_VISIBLE_SWEEP = 0.001;
+const GAUGE_SPAN = Math.PI;
+/** Chaque extrémité arrondie déborde : l'arc est réduit d'autant dans sa part de jauge. */
+const CAP_ANGLE = (STROKE_WIDTH / 2 + SEGMENT_GAP / 2) / RADIUS;
+const MIN_VISIBLE_SWEEP = 0.01;
+const MIN_ARC = 0.001;
 
 export interface SpeedometerChartProps {
   devices: readonly DeviceShare[];
@@ -29,70 +31,66 @@ export interface SpeedometerChartProps {
 }
 
 export function SpeedometerChart({ devices, activeIndex, setActiveIndex }: SpeedometerChartProps) {
-  const [containerRef, width] = useElementWidth<HTMLDivElement>();
   const values = useTweenedValues(devices.map((device) => device.value));
   const total = devices.reduce((sum, device) => sum + device.value, 0);
+  const cx = GAUGE_WIDTH / 2;
+  const cy = GAUGE_HEIGHT;
 
-  const radius = Math.min(MAX_RADIUS, Math.max(width / 2 - STROKE_WIDTH / 2, 1));
-  const height = radius + STROKE_WIDTH + BOTTOM_MARGIN;
-  const cx = width / 2;
-  const cy = radius + STROKE_WIDTH / 2;
-
-  // Les extrémités arrondies débordent de l'arc : l'angle utile les retire pour ne pas se chevaucher.
-  const capAngle = STROKE_WIDTH / 2 / radius;
-  const gapAngle = (STROKE_WIDTH + SEGMENT_GAP) / radius;
-  const usableAngle =
-    GAUGE_END - GAUGE_START - capAngle * 2 - gapAngle * Math.max(devices.length - 1, 0);
-
-  let cursor = GAUGE_START + capAngle;
+  let cursor = GAUGE_START;
   const segments = devices.map((device, index) => {
-    const sweep = ((values[index] ?? 0) / total) * usableAngle;
+    const sweep = ((values[index] ?? 0) / total) * GAUGE_SPAN;
     const start = cursor;
-    cursor += sweep + gapAngle;
+    cursor += sweep;
     return { device, index, start, sweep };
   });
 
   const featured = (activeIndex === null ? devices[0] : devices[activeIndex]) ?? devices[0];
 
   return (
-    <div ref={containerRef} className="relative mx-auto w-full" style={{ maxWidth: MAX_RADIUS * 2 + STROKE_WIDTH }}>
-      {width > 0 && (
-        <svg width={width} height={height} className="block">
-          {segments.map(({ device, index, start, sweep }) => {
-            const dimmed = activeIndex !== null && activeIndex !== index;
-            if (sweep < MIN_VISIBLE_SWEEP) return null;
-            const d = arcPath(cx, cy, radius, start, start + sweep);
-            return (
-              <g
-                key={device.name}
-                className="chart-focusable"
-                style={{ opacity: dimmed ? 0.25 : 1 }}
-                {...focusableMark(
-                  index,
-                  setActiveIndex,
-                  `${device.name}: ${formatNumber(device.value)}, ${formatPercent((device.value / total) * 100)}`,
-                )}
-              >
-                <path
-                  d={d}
-                  fill="none"
-                  stroke={device.color}
-                  strokeWidth={STROKE_WIDTH}
-                  strokeLinecap="round"
-                />
-              </g>
-            );
-          })}
-        </svg>
-      )}
+    <div className="relative mx-auto" style={{ width: GAUGE_WIDTH, height: GAUGE_HEIGHT }}>
+      <svg width={GAUGE_WIDTH} height={GAUGE_HEIGHT} className="block overflow-visible">
+        <path
+          d={arcPath(cx, cy, RADIUS, GAUGE_START + CAP_ANGLE, GAUGE_START + GAUGE_SPAN - CAP_ANGLE)}
+          fill="none"
+          stroke="var(--track)"
+          strokeWidth={STROKE_WIDTH}
+          strokeLinecap="round"
+        />
+        {segments.map(({ device, index, start, sweep }) => {
+          if (sweep < MIN_VISIBLE_SWEEP) return null;
+          const dimmed = activeIndex !== null && activeIndex !== index;
+          const arcStart = start + CAP_ANGLE;
+          const arcEnd = Math.max(start + sweep - CAP_ANGLE, arcStart + MIN_ARC);
+          return (
+            <g
+              key={device.name}
+              className="chart-focusable"
+              style={{ opacity: dimmed ? 0.3 : 1 }}
+              {...focusableMark(
+                index,
+                setActiveIndex,
+                `${device.name}: ${formatNumber(device.value)}, ${formatPercent((device.value / total) * 100)}`,
+              )}
+            >
+              <path
+                d={arcPath(cx, cy, RADIUS, arcStart, arcEnd)}
+                fill="none"
+                stroke={device.color}
+                strokeWidth={STROKE_WIDTH}
+                strokeLinecap="round"
+              />
+            </g>
+          );
+        })}
+      </svg>
       {featured && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-1 flex flex-col items-center">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center">
           <AnimatedNumber
             value={Math.round((featured.value / total) * 100)}
             format={formatPercent}
-            className="text-[32px] leading-10 font-semibold tracking-tight text-text"
+            className="text-[28px] leading-8 font-medium tracking-tight text-text"
           />
-          <span className="text-[13px] leading-[18px] text-muted">{featured.name}</span>
+          <span className="text-[11px] leading-[14px] text-muted">{featured.name}</span>
         </div>
       )}
     </div>
@@ -118,15 +116,15 @@ export function SpeedometerCard() {
   return (
     <ChartCard
       title="Speedometer"
-      description="A half gauge of rounded segments, with the leading share at its center until you hover another."
+      description="A half gauge of rounded segments showing the leading share at its center, with stat tiles underneath."
       label="Visitors"
       periods={DEVICE_PERIODS}
-      defaultPeriod="Last 30 days"
       getData={getData}
       formatValue={formatNumber}
       getHeadline={getHeadline}
       getTiles={getTiles}
-      tileColumns={4}
+      tileColumns={3}
+      chartHeight={GAUGE_HEIGHT}
       chartLabel="Visitors per device, as a half gauge of four segments"
     >
       {({ data, activeIndex, setActiveIndex }) => (

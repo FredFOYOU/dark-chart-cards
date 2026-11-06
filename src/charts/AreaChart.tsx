@@ -2,6 +2,7 @@ import { useId } from "react";
 import {
   Area,
   AreaChart as RechartsAreaChart,
+  CartesianGrid,
   ReferenceLine,
   ResponsiveContainer,
   XAxis,
@@ -18,9 +19,12 @@ import {
   type TrafficPoint,
   type TrafficSeries,
 } from "@/data/traffic";
-import { axisProps, useRechartsMotion } from "@/hooks/useRechartsMotion";
+import { axisProps, gridProps, useRechartsMotion } from "@/hooks/useRechartsMotion";
 import { chartColor, type ChartColor } from "@/lib/colors";
 import { formatCompact, formatNumber } from "@/lib/format";
+
+const CHART_HEIGHT = 172;
+const AXIS_TICKS = [0, 4500, 9000, 13500];
 
 /** Du bas vers le haut de la pile. */
 const SERIES: readonly { key: TrafficSeries; label: string; color: ChartColor }[] = [
@@ -41,11 +45,11 @@ export function AreaChart({ points, activeIndex, setActiveIndex }: AreaChartProp
   const activePoint = activeIndex === null ? undefined : points[activeIndex];
 
   return (
-    <ResponsiveContainer width="100%" height={232}>
+    <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
       <RechartsAreaChart
         data={[...points]}
         accessibilityLayer={false}
-        margin={{ top: 8, right: 4, bottom: 0, left: 0 }}
+        margin={{ top: 6, right: 4, bottom: 0, left: 0 }}
       >
         <defs>
           {SERIES.map(({ key, color }) => (
@@ -59,8 +63,23 @@ export function AreaChart({ points, activeIndex, setActiveIndex }: AreaChartProp
           labels={points.map((point) => point.month)}
           setActiveIndex={setActiveIndex}
         />
+        <CartesianGrid {...gridProps} />
         <XAxis dataKey="month" {...axisProps} tickMargin={6} minTickGap={8} />
-        <YAxis {...axisProps} width={36} tickCount={4} tickFormatter={formatCompact} />
+        <YAxis
+          {...axisProps}
+          width={38}
+          ticks={AXIS_TICKS}
+          domain={[0, AXIS_TICKS.at(-1) ?? "auto"]}
+          tickFormatter={formatCompact}
+        />
+        {activePoint && (
+          <ReferenceLine
+            x={activePoint.month}
+            stroke="var(--text-muted)"
+            strokeWidth={1}
+            strokeDasharray="3 3"
+          />
+        )}
         {SERIES.map(({ key, color }) => (
           <Area
             key={key}
@@ -70,12 +89,10 @@ export function AreaChart({ points, activeIndex, setActiveIndex }: AreaChartProp
             stroke={color}
             strokeWidth={2}
             fill={`url(#${gradientPrefix}-${key})`}
+            activeDot={{ r: 3.5, fill: color, stroke: "var(--card-inner)", strokeWidth: 1.5 }}
             {...seriesMotion}
           />
         ))}
-        {activePoint && (
-          <ReferenceLine x={activePoint.month} stroke="var(--text-muted)" strokeWidth={1} />
-        )}
       </RechartsAreaChart>
     </ResponsiveContainer>
   );
@@ -107,7 +124,7 @@ export function AreaCard() {
   return (
     <ChartCard
       title="Area chart"
-      description="Stacked gradient areas with a vertical cursor, where the headline and tiles follow the hovered month."
+      description="Stacked gradient series. Hover any month to update the headline and the tiles underneath."
       label="Visitors"
       periods={TRAFFIC_PERIODS}
       getData={getData}
@@ -116,6 +133,7 @@ export function AreaCard() {
       getTiles={getTiles}
       tileColumns={3}
       highlightActiveTile={false}
+      chartHeight={CHART_HEIGHT}
       chartLabel="Monthly visitors by channel, as stacked areas"
     >
       {({ data, activeIndex, setActiveIndex }) => (

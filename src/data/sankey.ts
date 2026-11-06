@@ -50,15 +50,15 @@ const TARGET_NAMES = [
 ] as const;
 
 /**
- * Affinité de chaque source (ligne) pour chaque cible (colonne) ; 0 signifie « pas de flux ».
- * Elle donne la forme du diagramme, les volumes viennent des heures et des parts de chaque période.
+ * Répartition de référence : heures de chaque source (ligne) vers chaque cible (colonne), relevées
+ * sur la vidéo. Le 0 signifie « pas de flux ». Elle sert de forme aux autres périodes.
  */
-const AFFINITY: readonly (readonly number[])[] = [
-  [3, 6, 0, 5, 0, 0, 2],
-  [0, 1, 3, 0, 0, 6, 1],
-  [6, 0, 2, 0, 0, 0, 3],
-  [2, 1, 3, 2, 5, 0, 0],
-  [5, 1, 2, 0, 1, 2, 0],
+const REFERENCE_FLOWS: readonly (readonly number[])[] = [
+  [10.4, 9.48, 3.2, 4.5, 4.42, 0, 0],
+  [0, 3, 2.4, 0, 0, 9.6, 3],
+  [4, 0, 0, 0, 0, 2.4, 5.6],
+  [0, 3, 2.6, 5.8, 0, 0, 2.6],
+  [4.5, 0, 3, 0, 2.5, 0, 0],
 ];
 
 /**
@@ -68,7 +68,7 @@ const AFFINITY: readonly (readonly number[])[] = [
 function buildFlows(hours: readonly number[], shares: readonly number[]): SankeyFlow[] {
   const total = hours.reduce((sum, value) => sum + value, 0);
   const targetHours = shares.map((share) => (share / 100) * total);
-  const matrix = AFFINITY.map((row) => [...row]);
+  const matrix = REFERENCE_FLOWS.map((row) => [...row]);
 
   for (let iteration = 0; iteration < 200; iteration += 1) {
     matrix.forEach((row, rowIndex) => {

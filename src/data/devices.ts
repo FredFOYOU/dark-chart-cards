@@ -23,7 +23,7 @@ const withValues = (values: readonly number[]): DeviceShare[] =>
   ].map((device, index) => ({ ...device, value: values[index] ?? 0 }));
 
 export const deviceData: Record<DevicePeriod, DeviceDataset> = {
-  "Last 7 days": { delta: 1.9, devices: withValues([310, 240, 92, 58]) },
-  "Last 30 days": { delta: 5.2, devices: withValues([1180, 620, 380, 320]) },
-  "Last 90 days": { delta: 8.7, devices: withValues([3120, 2260, 870, 650]) },
+  "Last 7 days": { delta: 5.2, devices: withValues([1180, 620, 380, 320]) },
+  "Last 30 days": { delta: 6.1, devices: withValues([4960, 2810, 1540, 1190]) },
+  "Last 90 days": { delta: 8.7, devices: withValues([14200, 8600, 4300, 3400]) },
 };

@@ -44,6 +44,8 @@ export const formatPercentOneDecimal: ValueFormatter = (value) =>
 export const formatNumber: ValueFormatter = (value) => integer.format(value);
 export const formatCurrency: ValueFormatter = (value) => currency.format(value);
 export const formatHours: ValueFormatter = (value) => `${integer.format(value)}h`;
+/** Pour les petits volumes, comme un flux du Sankey : 5.6 → « 5.6h ». */
+export const formatHoursOneDecimal: ValueFormatter = (value) => `${value.toFixed(1)}h`;
 /** `value` est exprimé en points de pourcentage : 47 → « 47% ». */
 export const formatPercent: ValueFormatter = (value) => percent.format(value / 100);
 /** `value` est exprimé en points de pourcentage : 3.4 → « +3.4% ». */

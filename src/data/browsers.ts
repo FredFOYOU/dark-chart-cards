@@ -11,21 +11,21 @@ export interface BrowserShare {
 
 export interface BrowserDataset {
   delta: number;
-  /** De l'anneau extérieur à l'anneau intérieur. */
+  /** De l'anneau intérieur à l'anneau extérieur, comme les tuiles. */
   series: readonly BrowserShare[];
 }
 
 const withValues = (values: readonly number[]): BrowserShare[] =>
   [
-    { name: "Chrome", color: chartColor.yellow },
-    { name: "Safari", color: chartColor.pink },
-    { name: "Firefox", color: chartColor.violet },
-    { name: "Edge", color: chartColor.blue },
     { name: "Other", color: chartColor.lime },
+    { name: "Edge", color: chartColor.blue },
+    { name: "Firefox", color: chartColor.violet },
+    { name: "Safari", color: chartColor.pink },
+    { name: "Chrome", color: chartColor.yellow },
   ].map((browser, index) => ({ ...browser, value: values[index] ?? 0 }));
 
 export const browserData: Record<BrowserPeriod, BrowserDataset> = {
-  "Last 7 days": { delta: 2.1, series: withValues([92, 71, 48, 54, 26]) },
-  "Last 30 days": { delta: 5.2, series: withValues([275, 200, 187, 173, 90]) },
-  "Last 90 days": { delta: 9.8, series: withValues([810, 655, 470, 512, 244]) },
+  "Last 7 days": { delta: 5.2, series: withValues([90, 173, 187, 200, 275]) },
+  "Last 30 days": { delta: 6.4, series: withValues([310, 640, 598, 720, 1105]) },
+  "Last 90 days": { delta: 9.8, series: withValues([910, 1830, 1790, 2240, 3380]) },
 };
