@@ -1,0 +1,92 @@
+@import "tailwindcss";
+@import "./tokens.css";
+@import "@fontsource-variable/inter";
+
+@source "../";
+
+@theme inline {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-bg: var(--bg);
+  --color-shell: var(--shell);
+  --color-card: var(--card);
+  --color-card-inner: var(--card-inner);
+  --color-tile: var(--tile);
+  --color-tile-active: var(--tile-active);
+  --color-line: var(--border);
+  --color-line-hover: var(--border-hover);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-delta: var(--chart-1);
+  --color-delta-bg: var(--delta-bg);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--on-primary);
+
+  --radius-card: var(--radius-card);
+  --radius-inner: var(--radius-inner);
+
+  --animate-menu-in: menu-in 150ms ease-out;
+  --animate-menu-out: menu-out 100ms ease-in;
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes menu-out {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
+  }
+}
+
+/* Attenuation synchronisee des elements non actifs (200 ms). */
+.chart-focusable {
+  transition: opacity 200ms ease-out;
+}
+
+.chart-focusable:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
