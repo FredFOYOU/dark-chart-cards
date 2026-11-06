@@ -64,7 +64,7 @@ export function AreaChart({ points, activeIndex, setActiveIndex }: AreaChartProp
           setActiveIndex={setActiveIndex}
         />
         <CartesianGrid {...gridProps} />
-        <XAxis dataKey="month" {...axisProps} tickMargin={6} minTickGap={8} />
+        <XAxis dataKey="month" {...axisProps} tickMargin={6} minTickGap={2} />
         <YAxis
           {...axisProps}
           width={38}

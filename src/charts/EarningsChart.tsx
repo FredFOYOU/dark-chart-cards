@@ -78,6 +78,7 @@ export function EarningsChart({ bars, activeIndex, setActiveIndex }: EarningsCha
           {...axisProps}
           width={44}
           ticks={AXIS_TICKS}
+          interval={0}
           domain={[0, AXIS_MAX]}
           tickFormatter={formatCompactCurrency}
         />
