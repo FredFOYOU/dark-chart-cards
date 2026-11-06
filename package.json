@@ -33,7 +33,7 @@
   },
   "license": "MIT",
   "description": "Reproduction d'une galerie de 10 cartes de graphiques en thème sombre.",
-  "homepage": "https://fredfoyou.github.io/dark-chart-cards/",
+  "homepage": "https://dark-chart-cards.vercel.app/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/FredFOYOU/dark-chart-cards.git"

@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/FredFOYOU/dark-chart-cards/actions/workflows/ci.yml/badge.svg?branch=fix%2Fvideo-fidelity)](https://github.com/FredFOYOU/dark-chart-cards/actions/workflows/ci.yml)
 [![Déploiement](https://github.com/FredFOYOU/dark-chart-cards/actions/workflows/pages.yml/badge.svg?branch=fix%2Fvideo-fidelity)](https://github.com/FredFOYOU/dark-chart-cards/actions/workflows/pages.yml)
-[![Démo](https://img.shields.io/badge/d%C3%A9mo-en%20ligne-9de300)](https://fredfoyou.github.io/dark-chart-cards/)
+[![Démo](https://img.shields.io/badge/d%C3%A9mo-Vercel-9de300?logo=vercel&logoColor=white)](https://dark-chart-cards.vercel.app/)
 [![Release](https://img.shields.io/github/v/release/FredFOYOU/dark-chart-cards)](https://github.com/FredFOYOU/dark-chart-cards/releases)
 [![Licence MIT](https://img.shields.io/github/license/FredFOYOU/dark-chart-cards)](LICENSE)
 
@@ -22,9 +22,9 @@
 
 Reproduction d'une galerie de 10 cartes de graphiques en thème sombre, avec survol synchronisé, compteurs animés et changement de période.
 
-**[Voir la démo en ligne](https://fredfoyou.github.io/dark-chart-cards/)**
+**[Voir la démo en ligne](https://dark-chart-cards.vercel.app/)** · [Miroir GitHub Pages](https://fredfoyou.github.io/dark-chart-cards/)
 
-<a href="https://fredfoyou.github.io/dark-chart-cards/"><img src="docs/screenshots/page-desktop.png" alt="Galerie complète sur bureau" width="720"></a>
+<a href="https://dark-chart-cards.vercel.app/"><img src="docs/screenshots/page-desktop.png" alt="Galerie complète sur bureau" width="720"></a>
 
 ## Fonctionnalités
 
